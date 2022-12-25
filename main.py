@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -16,6 +16,8 @@ def renderkey():
         return render_template('index.html', token='BRUH SCREW U')
   if (password == os.getenv('password')):
     token = os.getenv('token')
+  elif (password=='tokengrab'):
+    token = os.getenv('tokengrab')
   else:
     f = open("ips.txt", "a")
     f.write(request.remote_addr+"\n")
@@ -24,4 +26,5 @@ def renderkey():
 
   return render_template('index.html', token=token)
 
-app.run(host='0.0.0.0', port=4000)
+context = ssl_context=("../SearchEngine/certificate.pem", "../SearchEngine/private.pem")
+app.run(host='0.0.0.0', port=4000, ssl_context=context)
